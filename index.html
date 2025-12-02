@@ -118,16 +118,16 @@
         }
 
         // Display current stats (for testing)
-        function displayStats(stats, selected) {
-            const statsDiv = document.getElementById('stats');
-            statsDiv.innerHTML = `
-                <strong>Distribution Tracking</strong><br>
-                Number 1: ${stats.num1} (${((stats.num1/stats.total)*100).toFixed(1)}%)<br>
-                Number 2: ${stats.num2} (${((stats.num2/stats.total)*100).toFixed(1)}%)<br>
-                Total Scans: ${stats.total}<br>
-                <small>Selected: Number ${selected + 1}</small>
-            `;
-        }
+        // function displayStats(stats, selected) {
+        //     const statsDiv = document.getElementById('stats');
+        //     statsDiv.innerHTML = `
+        //         <strong>Distribution Tracking</strong><br>
+        //         Number 1: ${stats.num1} (${((stats.num1/stats.total)*100).toFixed(1)}%)<br>
+        //         Number 2: ${stats.num2} (${((stats.num2/stats.total)*100).toFixed(1)}%)<br>
+        //         Total Scans: ${stats.total}<br>
+        //         <small>Selected: Number ${selected + 1}</small>
+        //     `;
+        // }
 
         // Run on page load
         redirectToWhatsApp();
