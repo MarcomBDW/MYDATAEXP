@@ -4,7 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Redirecting to WhatsApp...</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
     <style>
+        * {
+            border: 0;
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
         body {
             margin: 0;
             padding: 0;
@@ -12,51 +22,133 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #FF3800 0%, #CC2D00 100%);
+            font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
         }
+        
         .container {
             text-align: center;
             color: white;
             padding: 2rem;
         }
-        .spinner {
-            width: 50px;
-            height: 50px;
-            border: 4px solid rgba(255,255,255,0.3);
-            border-top-color: white;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 1.5rem;
+        
+        /* Stack Loader Animation */
+        .stack {
+            --stack-dur: 2s;
+            --stack-delay: 0.05;
+            --stack-spacing: 15%;
+            overflow: hidden;
+            position: relative;
+            width: 14em;
+            height: 32em;
+            margin: 0 auto 2rem;
         }
-        @keyframes spin {
-            to { transform: rotate(360deg); }
+        
+        .stack__card {
+            aspect-ratio: 1;
+            position: absolute;
+            inset: 0;
+            top: var(--stack-spacing);
+            margin: auto;
+            width: 70%;
+            transform: rotateX(45deg) rotateZ(-45deg);
+            transform-style: preserve-3d;
         }
+        
+        .stack__card::before {
+            animation: card var(--stack-dur) infinite;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 7.5%;
+            box-shadow: -0.5em 0.5em 1.5em rgba(0, 0, 0, 0.2);
+            content: "";
+            display: block;
+            position: absolute;
+            inset: 0;
+        }
+        
+        .stack__card:nth-child(2) {
+            top: 0;
+        }
+        
+        .stack__card:nth-child(2)::before {
+            animation-delay: calc(var(--stack-dur) * (-1 + var(--stack-delay)));
+            background-color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .stack__card:nth-child(3) {
+            top: calc(var(--stack-spacing) * -1);
+        }
+        
+        .stack__card:nth-child(3)::before {
+            animation-delay: calc(var(--stack-dur) * (-1 + var(--stack-delay) * 2));
+            background-color: rgba(255, 255, 255, 0.5);
+            background-image: url('MLogo.svg');
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: 45% 45%;
+        }
+        
+        @keyframes card {
+            0%, 100% {
+                animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+                transform: translateZ(0);
+            }
+            11% {
+                animation-timing-function: cubic-bezier(0.32, 0, 0.67, 0);
+                opacity: 1;
+                transform: translateZ(0.125em);
+            }
+            34% {
+                animation-timing-function: steps(1);
+                opacity: 0;
+                transform: translateZ(-12em);
+            }
+            48% {
+                animation-timing-function: linear;
+                opacity: 0;
+                transform: translateZ(12em);
+            }
+            57% {
+                animation-timing-function: cubic-bezier(0.33, 1, 0.68, 1);
+                opacity: 1;
+                transform: translateZ(0);
+            }
+            61% {
+                animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+                transform: translateZ(-1.8em);
+            }
+            74% {
+                animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+                transform: translateZ(0.6em);
+            }
+            87% {
+                animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+                transform: translateZ(-0.2em);
+            }
+        }
+        
         h1 {
             font-size: 1.5rem;
             margin: 0 0 0.5rem 0;
             font-weight: 600;
         }
+        
         p {
             font-size: 1rem;
             opacity: 0.9;
             margin: 0;
         }
-        .stats {
-            margin-top: 2rem;
-            padding: 1rem;
-            background: rgba(0,0,0,0.2);
-            border-radius: 8px;
-            font-size: 0.875rem;
-        }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="spinner"></div>
+        <div class="stack">
+            <div class="stack__card"></div>
+            <div class="stack__card"></div>
+            <div class="stack__card"></div>
+        </div>
         <h1>Connecting to WhatsApp...</h1>
         <p>Please wait a moment</p>
-        
     </div>
 
     <script>
@@ -108,26 +200,11 @@
             }
             saveStats(stats);
             
-            // Show stats (optional - remove if you don't want to show)
-            //displayStats(stats, selectedIndex);
-            
-            // Redirect after 800ms
+            // Redirect immediately
             setTimeout(() => {
                 window.location.href = WHATSAPP_NUMBERS[selectedIndex];
             }, 800);
         }
-
-        // Display current stats (for testing)
-        // function displayStats(stats, selected) {
-        //     const statsDiv = document.getElementById('stats');
-        //     statsDiv.innerHTML = `
-        //         <strong>Distribution Tracking</strong><br>
-        //         Number 1: ${stats.num1} (${((stats.num1/stats.total)*100).toFixed(1)}%)<br>
-        //         Number 2: ${stats.num2} (${((stats.num2/stats.total)*100).toFixed(1)}%)<br>
-        //         Total Scans: ${stats.total}<br>
-        //         <small>Selected: Number ${selected + 1}</small>
-        //     `;
-        // }
 
         // Run on page load
         redirectToWhatsApp();
